@@ -1,5 +1,5 @@
 from flask import Flask
-from markpsafe import escape
+from markupsafe import escape
 app = Flask(__name__)
 @app.route("/<name>")
 def hello(name):
