@@ -9,8 +9,6 @@ from cs50 import SQL  #Imported for saving
 
 user={'test','testpass0'}
 
-#Above is for importation of database
-
 def window():
   scr.destroy()
   scr.title("Robot GUI")
