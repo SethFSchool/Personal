@@ -1,0 +1,107 @@
+import random  #Imported for numeric purpose of passkey
+import string  #Imported for alphabetic purpose of passkey
+from tkinter import *  #Imported for GUI
+from tkinter import messagebox #Imported for popups
+
+from cs50 import SQL  #Imported for saving
+
+#Above is for importation of required libraries
+
+user={'test','testpass0'}
+
+#Above is for importation of database
+
+def window():
+  scr.destroy()
+  scr.title("Robot GUI")
+  scr.geometry('500x500')
+  
+  label=Label(scr,text="Robot GUI",font=("",40))
+  label.pack(anchor="center")
+  
+  bn=Button(scr,text="Forward")
+  bn.place(x=0,y=50)
+  
+  bn2=Button(scr,text="Left")
+  bn2.place(x=-50,y=100)
+  
+  bn3=Button(scr,text="Right")
+  bn3.place(x=50,y=100)
+  
+  bn4=Button(scr,text="Stop")
+  bn4.place(x=0,y=100)
+  
+  bn5=Button(scr,text="Backward")
+  bn5.place(x=0,y=150)
+  #creates new gui (robot gui)
+def save():
+  check1=str(in1.get())
+  check2=str(in2.get())
+  if check1 !="":
+    if check2 !="":
+      if {check1,check2} in user:
+        name=str(in1.get())
+        messageS=f'Welcome {name}'
+        messagebox.showinfo("Save", messageS)
+        #Above section is for saving the inserted data if all the data is properly
+        #inserted
+        window()
+    
+  if check1=="":
+    messageF="Sorry, you forgot to insert your name. Please insert your name using\
+    letters of the A-Z English Alphabet and try again."
+    messagebox.showinfo("Error", messageF)
+  if check2=="":
+    messageF="Sorry, your code was incorrect. Please apply for a code using\
+    Get/Change Passkey and try again."
+    messagebox.showinfo("Error", messageF)
+ 
+  '''Above check1 and check2 is to let a person know if they are missing 
+  information while also not saving'''
+
+def pin():
+  check1=str(in1.get())
+  global user
+  if check1 != "":
+    if check1 in user:
+      messagebox.showinfo("Update Request", "Sorry, you have already applied for a code")
+      #If user has already applied for a code, prevents code change
+    else:
+      pin=(''.join(random.choices(string.ascii_uppercase, k=10)))
+      while True:
+        if pin in user:
+          pin=(''.join(random.choices(string.ascii_uppercase, k=10)))
+        else:
+          user[check1]=pin
+      messagebox.showinfo("Pin Update",f'Hello, {check1}, your pin has been updated to\
+      {pin}. Please take note of this as this cannot be changed.')
+      #If user has no code, this gives the user a code.
+
+scr=Tk()
+scr.geometry("550x550")
+scr.title("Login")
+
+label=Label(scr,text="Login",font=("",40))
+label.pack(anchor="center")
+
+lb2=Label(scr,text="Name:",font=("",30))
+lb2.place(x=10,y=90)
+
+in1=Entry(scr)
+in1.place(x=150,y=108) #in1 is for Name section
+
+lb4=Label(scr,text="Entrance Code:",font=("",30))
+lb4.place(x=10,y=180) #Password/Passkey provided at random when applied for
+
+in2=Entry(scr)
+in2.place(x=320,y=198) #in2 is for Entrance Code section
+
+bn=Button(scr,text="Access Robot Controls",command=lambda:save())
+bn.place(x=0,y=350) #If a person has both forms properly filled, this is the button to hit
+
+bn2=Button(scr,text="Get Passkey",command=lambda:pin())
+bn2.place(x=0,y=450) 
+#If a person has yet to get a passkey, this is the button to hit after filling out
+#their Name
+
+scr.mainloop()
